@@ -1,3 +1,5 @@
+--Advanced Base Calculator
+
 --Connor Plunkett and Zack Noble (https://github.com/connorp987 and https://github.com/zanoble)
 
 --Variables
@@ -180,6 +182,7 @@ main =
           putStrLn "To add a variable do: \"x := 5+5\". Would result in x being stored as 10"
           putStrLn "\"vars\" - to display all variables"
           putStrLn "\"Base\" - to change the currenct Base"
+          putStrLn "\"CurrentBase\" - to display current Base"
           putStrLn "\"exit\" or \":q\" - to exit program \n"
           loop env base
         ["CurrentBase"] -> do
