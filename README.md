@@ -1,4 +1,5 @@
 # Base-Calculator-Haskell
+Zack Noble & Connor Plunkett
 Basic calculator with base calculations
 
 In terminal run the line ghc baseCalc -o baseCalc
