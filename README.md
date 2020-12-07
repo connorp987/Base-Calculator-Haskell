@@ -16,12 +16,12 @@ y:=2
 Enter your input:
 x+y
 
-There are different commands that you can enter into the program at any time.
-exit/:q -- Quits the program
-vars -- Displays the current values of the variables
-help -- Gives the listed commands
-CurrentBase -- Displays the current base the program is running in
-Base -- Prompts the user to enter a new base for the program to be ran in
+There are different commands that you can enter into the program at any time: <br/>
+exit/:q -- Quits the program<br/>
+vars -- Displays the current values of the variables<br/>
+help -- Gives the listed commands<br/>
+CurrentBase -- Displays the current base the program is running in<br/>
+Base -- Prompts the user to enter a new base for the program to be ran in<br/>
 
 You can change the base of the calculator using the Base function and entering in a base, this will make the program require the user to enter digits in the specified base. 
 
