@@ -2,8 +2,8 @@
 **Zack Noble** & **Connor Plunkett** <br/>
 ##### Basic calculator with base calculations
 
-In terminal run the line `ghc baseCalc -o baseCalc` <br/>
-Next run `./baseCalc.exe`
+In terminal run the line **ghc baseCalc -o baseCalc** <br/>
+Next run **./baseCalc.exe**
 
 The program will prompt the user with “Enter your input:”
 By default the program runs in base 10 you can give the program variables and do basic arithmetic operations. 
