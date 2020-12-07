@@ -1,4 +1,4 @@
---Connor Plunkett and Zack Noble
+--Connor Plunkett and Zack Noble (https://github.com/connorp987 and https://github.com/zanoble)
 
 --Variables
 type Vars = String
@@ -23,16 +23,22 @@ lookUp :: String -> Env -> Integer
 lookUp x ((y,v) : e) | x == y = v
                      | otherwise = lookUp x e
 
+lookUpDec :: Integer -> String
+lookUpDec x | x == 10 = "A"
+            | x == 11 = "B"
+            | x == 12 = "C"
+            | x == 13 = "D"
+            | x == 14 = "E"
+            | x == 15 = "F"
+            | otherwise = show x
 
 convBase :: Integer -> Base -> String
 convBase x 1 = show x
 convBase x b | b < 2 = error "Base cannot be less then two"
-             | x < b = show x
+             | x < b = lookUpDec x
              | otherwise =
-               let f y = if y < b then show y else show (mod y b) ++ f (div y b)
+               let f y = if y < b then lookUpDec y else lookUpDec (mod y b) ++ f (div y b)
                in reverse (f x)
-
-
 
 evalP :: Env -> Poly String -> Base-> Integer
 evalP env (Var x) base   = lookUp x env
@@ -64,10 +70,10 @@ isCSym (x:xs) =
    in isDigitP x && q1 xs
 
 isAlphaP :: Char -> Bool
-isAlphaP x = ('A' <= x && x <= 'Z') || ('a' <= x && x <= 'z')
+isAlphaP x = ('G' <= x && x <= 'Z') || ('a' <= x && x <= 'z')
 
 isDigitP :: Char -> Bool
-isDigitP x = '0' <= x && x <= '9'
+isDigitP x = ('0' <= x && x <= '9') || ('A' <= x && x <= 'F')
 
 isVSym :: String -> Bool
 isVSym "" = False
@@ -89,9 +95,18 @@ expt :: Integer -> Integer -> Integer
 expt b 0 = 1
 expt b n = b * expt b (n-1)
 
+lookAlpha :: String -> Integer
+lookAlpha s | s == "A" = 10
+            | s == "B" = 11
+            | s == "C" = 12
+            | s == "D" = 13
+            | s == "E" = 14
+            | s == "F" = 15
+            | otherwise =  read s
+
 readBase :: String -> Base -> Integer
 readBase "" b = 0
-readBase (x:xs) b = read [x] * expt b (len xs) + readBase xs b
+readBase (x:xs) b = lookAlpha [x] * expt b (len xs) + readBase xs b
 
 classify :: Base -> String -> Token
 classify b "(" = LPar
@@ -138,12 +153,6 @@ update x newval ((y,v) : e) | x == y = (x,newval) : e
                             | otherwise = (y,v) : update x newval e
 
 
-
-updateBase :: Integer -> Base-> Base
-updateBase x y | x == y = y
-               | otherwise = updateBase x x
-
-
 -- A pretty-printer for environments
 printEnv :: Env -> Base -> String
 printEnv e b =
@@ -156,6 +165,7 @@ printEnv e b =
 main :: IO ()
 main =
   let loop env base = do
+      putStrLn "For more commands type \"help\". Otherwise:"
       putStrLn "Enter your input:"
       rawinput <- getLine
       case (words rawinput) of
@@ -163,11 +173,17 @@ main =
         ["exit"] -> return ()
         [":q"] -> return ()
         ["vars"] -> do
-          putStrLn "The current values of the variables are:"
+          putStrLn "The current values of the variables are: "
           putStrLn (printEnv env base)
           loop env base
+        ["help"] -> do
+          putStrLn "To add a variable do: \"x := 5+5\". Would result in x being stored as 10"
+          putStrLn "\"vars\" - to display all variables"
+          putStrLn "\"Base\" - to change the currenct Base"
+          putStrLn "\"exit\" or \":q\" - to exit program \n"
+          loop env base
         ["CurrentBase"] -> do
-          putStrLn "The current value of the Base is:"
+          putStrLn "The current value of the Base is: "
           putStrLn (show base)
           loop env base
         ["Base"] -> do
@@ -179,11 +195,11 @@ main =
         (v : ":=" : pe) -> do
           let p = parser (lexer base (unwords pe))
           let r = evalP env p base
-          putStrLn ("The variable is set to new value:" ++ convBase r base )
+          putStrLn ("The variable is set to new value: " ++ convBase r base ++ "\n")
           loop (update v r env) base -- The loop is called recursively with NEW env
         expr -> do
           let p = parser (lexer base (unwords expr))
           let r = evalP env p base
-          putStrLn ("Your expression evaluates to:" ++ convBase r base )
+          putStrLn ("Your expression evaluates to: " ++ convBase r base ++ "\n")
           loop env base    -- The loop is called recursively with the same env
   in loop [] 10

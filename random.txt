@@ -1,6 +1,0 @@
-String num = "123";
-Int newNum = 0;
-
-for (int i = 0; i < num.length; i++) {
-    newNum += num[0] * base^(num.length-i);
-}
